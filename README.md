@@ -1,6 +1,6 @@
 ## BKACAD - KHOÁ ĐÀO TẠO DEVOPS
 
-- [Thông tin về khóa học xem tại đây](https://github.com/anhnbt/devops/blob/master/assets/BKACAD - KHOÁ ĐÀO TẠO DEVOPS.pdf)
+- [Thông tin về khóa học xem tại đây](https://github.com/anhnbt/devops/blob/master/assets/BKACAD%20-%20KHO%C3%81%20%C4%90%C3%80O%20T%E1%BA%A0O%20DEVOPS.pdf)
 
 ### Mục tiêu khóa học
 Khóa học *DevOps* nâng cao gồm nhiều ví dụ mẫu, các bài tập thực hành từ dễ đến khó sẽ giúp học viên tiếp cận DevOps một cách nhanh chóng, nắm vững các kiến thức cần thiết để có thể áp dụng ngay vào thực tế công việc:
