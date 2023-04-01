@@ -1,0 +1,5 @@
+---
+- hosts: apiserver
+  tasks: 
+    - name: Ping check host
+      ping: 

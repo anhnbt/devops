@@ -1,0 +1,9 @@
+---
+- hosts: apiserver
+  tasks:
+    - name: Ping check host
+      ping: ~
+    - name: Install Apache
+      yum: name=httpd update_cache=yes
+    - name: Start Apache
+      service: name=httpd state=started
