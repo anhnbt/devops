@@ -30,42 +30,39 @@ WORKDIR /usr/local/tomcat/
 VOLUME /usr/local/tomcat/webapps
 # end content
 
-
-# setup environment
-vim /etc/profile.d/maven.sh
-# content
-export JAVA_HOME=/usr/lib/jvm/default-java
-export M2_HOME=/opt/maven
-export MAVEN_HOME=/opt/maven
-export PATH=${M2_HOME}/bin:${PATH}
-# end content
-
-# Cho quyen thuc thi file maven.sh
-chmod +x /etc/profile.d/maven.sh
-# 
-source /etc/profile.d/maven.sh
-
-#
-#[8:05 CH] Trần Tuấn Kiệt
-#mysql :bkacad-db01root/admin123
-
-#[8:06 CH] Trần Tuấn Kiệt
-#memcached :bkacad-memcached01bkacad-memcached02
-
-#[8:06 CH] Trần Tuấn Kiệt
-#rabbitmq :bkacad-rabbitmq01guest/guest
-
-#upstream bkacad-app {  server bkacad-app:8080;    }server {  listen 80;location / {  proxy_pass http://bkacad-app;}}
-
-
-
-
-
 # Build image vproapp
 docker build -t vprofileapp:v1 .
 
 docker images
 
+# Create Web Config
+mkdir -p /home/anhnbt/Bkacad-ClassDevops/DockerFile/web
+vim nginxvproapp.conf
+
+# content
+upstream bkacad-app {
+  server bkacad-app:8080;
+}
+server {
+  listen 80;
+  location / {
+    proxy_pass http://bkacad-app;
+  }
+}
+# end content
+# TAO DOCKERFILE CHO WEB CONTAINER
+cd ../web
+vim Dockerfile
+# content
+FROM nginx
+LABEL "Profile"="Vprofile"
+LABEL "Author"="AnhNBT"
+RUM rm -rf /etc/nginx/conf.d/default.conf
+COPY nginxvproapp.conf /etc/nginx/conf.d/vproapp.conf
+# end content
+
+# Build web image
+docker build -t vprofileweb:v1 .
 # Tao Dockerfile cho db container
 cd ../db
 vim Dockerfile
@@ -80,24 +77,10 @@ ENV MYSQL_DATABASE="accounts"
 
 ADD db_backup.sql docker-entrypoint-initdb.d/db_backup.sql
 # end content
+cp ~/Bkacad-ClassDevops/src/main/resources/db_backup.sql ~/Bkacad-ClassDevops/db
 
 # Build db image
 docker build -t vprofiledb:v1 .
-
-
-# TAO DOCKERFILE CHO WEB CONTAINER
-cd ../web
-vim Dockerfile
-# content
-FROM nginx
-LABEL "Profile"="Vprofile"
-LABEL "Author"="AnhNBT"
-RUM rm -rf /etc/nginx/conf.d/default.conf
-COPY nginxvproapp.conf /etc/nginx/conf.d/vproapp.conf
-# end content
-
-# Build web image
-docker build -t vprofileweb:v1 .
 
 # Pull image rabbit, memcached
 docker pull memcached
@@ -154,3 +137,5 @@ volumes:
   vprodbdata: {}
   vproappdata: {}
 # end content
+# start docker-compose
+docker-compose up
