@@ -30,3 +30,30 @@ shell: `ansible-playbook -i /etc/ansible/hosts ping-hosts.yaml -e hostname=apise
 ## Syntax check
 
 `ansible-playbook example-ping.yaml --syntax-check`
+
+## Apache
+
+playbook:
+
+```
+---
+- hosts: apiserver
+  tasks:
+    - name: Ping check host
+      ping: ~
+    - name: Install Apache
+      yum: name=httpd update_cache=yes
+    - name: Start Apache
+      service: name=httpd state=started
+```
+
+shell: `ansible-playbook -i /etc/ansible/hosts install-apache.yaml -v`
+
+## Nginx
+shell: `ansible-playbook -i /etc/ansible/hosts install-nginx -v > install-nginx.log`
+
+## Example Loop
+shell: `ansible-playbook -i /etc/ansible/hosts example-loop.yaml -vvvv`
+shell: netstat -tunlp
+
+Install Net Tools: `yum install net-tools`

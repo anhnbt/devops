@@ -1,0 +1,30 @@
+---
+- hosts: webservers
+  become: yes
+
+  vars:
+    - domain_name: "anhnbt.com"
+    - index_file: "index.html"
+  
+  tasks:
+    - name: Install Apache, PHP
+      yum:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - httpd
+        - php
+        - php-mysql
+
+    - name: Deploy HTML file
+      template:
+        src: /tmp/{{ index_file }}
+        dest: /var/www/html/index.html
+
+    - name: Start services
+      systemd:
+        name: "{{ item }}"
+        state: started
+        enabled: true
+      loop:
+        - httpd

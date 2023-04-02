@@ -1,0 +1,23 @@
+---
+- hosts: apiserver
+  become: yes
+
+  tasks:
+    - name: Install EPEL repository
+      yum:
+        name: epel-release
+        state: present
+    - name: Install Apache
+      yum:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - httpd
+        - redis
+    - name: Restart Apache and MySQL
+      service:
+        name: "{{ item }}"
+        state: restarted
+      loop:
+        - httpd
+        - redis

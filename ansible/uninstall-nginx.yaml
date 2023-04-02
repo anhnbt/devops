@@ -1,0 +1,12 @@
+---
+- hosts: webservers
+  gather_facts: true
+  become: true
+  tasks:
+    - name: Check connection
+      ping:
+    - name: Uninstall Nginx
+      yum:
+        name: nginx
+        state: absent
+      notify: stop nginx

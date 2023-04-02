@@ -1,0 +1,2 @@
+mariadb_root_password: abcd.1234
+wp_db_name: wordpress_db

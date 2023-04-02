@@ -1,0 +1,32 @@
+---
+- hosts: webservers
+  gather_facts: true
+  become: true
+  pre_tasks:
+    - name: Install Python
+      raw: yum install python -y && yum install epel-release -y
+      tags: ['always']
+  tasks:
+    - name: Check connection
+      ping: 
+    - name: Upgrade package
+      yum:
+        name: "*"
+        state: latest
+        update_cache: true
+    - name: Install Nginx
+      yum:
+        name: nginx
+        state: present
+      notify: start nginx
+  handlers:
+    - name: start nginx
+      systemd:
+        name: nginx
+        state: started
+        enabled: true
+  post_tasks:
+    - name: Check nginx status
+      shell: "{{ item }}"
+      with_items:
+        - cd /etc/nginx && ls
